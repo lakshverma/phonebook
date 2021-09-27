@@ -1,6 +1,11 @@
 const { request, response } = require('express')
 const express = require('express')
+var morgan = require('morgan')
+
 const app = express()
+app.use(morgan('tiny'))
+
+app.use(express.json())
 
 let people = [
   { 
@@ -43,6 +48,33 @@ app.get('/api/people/:id', (request, response) => {
   const id = Number(request.params.id)
   const person = people.find(person => person.id === id)
   response.json(person)
+})
+
+app.post('/api/people/', (request, response) => {
+  const body = request.body
+
+  if (!body.name || !body.number) {
+    return response.status(400).json({ 
+      error: 'content missing' 
+    })
+  }
+
+  if (people.find(person => person.name === body.name)) {
+    return response.status(422).json({
+      error: 'name must be unique'
+    })
+  }
+
+  const person = {
+    id: (Math.floor(Math.random()*100000) + 1),
+    name: body.name,
+    number: body.number
+  }
+
+  people = people.concat(person)
+
+  response.json(person)
+
 })
 
 app.delete('/api/people/:id', (request, response) => {
