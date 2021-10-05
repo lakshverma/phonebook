@@ -1,10 +1,13 @@
-DELETE http://localhost:3001/api/people/8507
+DELETE http://localhost:3001/api/people/615c89233c810498ef412fd2
 
 ###
 POST http://localhost:3001/api/people/ HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Radhika Verma",
+    "name": "Lakshay Verma",
     "number": "011-45524314"
 }
+
+###
+GET http://localhost:3001/api/people/
